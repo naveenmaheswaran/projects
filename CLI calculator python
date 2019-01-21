@@ -1,0 +1,32 @@
+import re
+print("Naveen Maheswaran CLI Claculator")
+print("To perform operation enter the equation")
+print("To Exit enter exit")
+
+run = True
+pre=0
+
+def per_math():
+
+    global pre
+    if pre == 0:
+        eq = input("ENTER THE EQUATION / EXIT...")
+
+    else:
+        eq=input(str(pre))
+
+    global run
+    if eq == "EXIT" or eq == "exit" or eq == "Exit":
+        run = False
+        return
+    eq=re.sub('[a-zA-Z:,(){}]', '', eq)
+    if pre!=0:
+        eq = str(pre) + eq
+
+    pre=eval(eq)
+
+
+while run:
+    per_math()
+print("Finishing the calculation...")
+print("Exit")

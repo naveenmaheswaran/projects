@@ -1,0 +1,62 @@
+import datetime
+
+
+no_of_entites = 0
+entites = {}
+mission_name=""
+
+
+def line():
+    print("")
+    for i in range(0, 100, 1):
+        print("=", end="")
+    print("")
+
+
+def get_entities():
+    print("\t\t\t\tData uplink-cloud CLI console Setup")
+    print(datetime.datetime.now())
+    global no_of_entites,mission_name
+    mission_name = input("Enter the Mission Name...")
+    no_of_entites = int(input("Enter the Number of Entities..."))
+    global entites
+    print("Enter the Entities:")
+    for i in range(1, no_of_entites + 1):
+        y = str(i) + " th entites..."
+        x = str(input(y))
+        entites[str(i)] = x
+
+
+def push_data():
+    global entites,no_of_entites,mission_name
+    check = 1
+    from firebase import firebase
+    date = str(datetime.datetime.now().date())
+    firebase = firebase.FirebaseApplication('https://pytest-23462.firebaseio.com/', None)
+    firebase.put(url='https://pytest-23462.firebaseio.com/', name="/" + mission_name+ "/Entites", data=no_of_entites)
+    while(check!=0):
+        print(datetime.datetime.now())
+
+        data_a = {}
+        for i in entites.keys():
+            data_a[entites[i]] = input(entites[i]+" = ")
+        timet = str(datetime.datetime.now().hour)+":"+str(datetime.datetime.now().minute)
+        recent={"date":date,"time":timet}
+        firebase.put(url='https://pytest-23462.firebaseio.com/', name= "/"+mission_name+"/recent", data=recent)
+        firebase.put(url='https://pytest-23462.firebaseio.com/', name="/"+mission_name+"/"+date+"/"+timet, data= data_a)
+        check=int(input("Done.........\n99 to continue\n0-exit\n"))
+        line()
+
+
+
+
+
+
+
+
+line()
+get_entities()
+line()
+push_data()
+
+
